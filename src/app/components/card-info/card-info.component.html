@@ -1,6 +1,18 @@
-<p>
-<ion-card>
-  <ion-tittle> </ion-tittle>
-  <iont-Card-content></ion-content>
-</ion-card>
-</p>
+<input type="text" [(ngModel)]="busqueda" placeholder="Buscar libro por titulo.." />
+@for(libro of libros; track libro.titulo){
+  @if(libro.titulo.toLowerCase().includes(busqueda.toLowerCase())){
+  <ion-card>
+    <img [alt]="libro.titulo" [src]="libro.caratula" height="100" />
+    <ion-card-header>
+      <ion-card-title>{{libro.titulo}}</ion-card-title>
+      <ion-card-subtitle>{{libro.edicion}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      {{libro.descripcion}}
+    </ion-card-content>
+    <ion-button (click)="agregar(libro)">
+      Agregar
+    </ion-button>
+  </ion-card>
+  }
+}
