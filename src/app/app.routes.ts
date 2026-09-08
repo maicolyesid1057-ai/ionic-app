@@ -7,8 +7,8 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'folder/:folder',
+    path: 'folder/libros',
     loadComponent: () =>
-      import('./folder/folder.page').then((m) => m.FolderPage),
+      import('../app/pages/libros/libros-page.component').then((m) => m.LibrosPageComponent),
   },
 ];

@@ -1,0 +1,29 @@
+.lista-libros {
+width: 100%;
+padding: 10px;
+box-sizing: border-box;
+}
+
+.libro-card {
+width: 100%;
+margin: 0 0 16px 0;
+box-sizing: border-box;
+}
+
+.portada {
+width: 100%;
+height: 280px;
+object-fit: cover;
+}
+
+ion-card-title {
+font-size: 20px;
+}
+
+ion-card-subtitle {
+font-size: 14px;
+}
+
+ion-card-content {
+font-size: 14px;
+}
