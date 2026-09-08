@@ -6,14 +6,9 @@ export const routes: Routes = [
     redirectTo: 'folder/Inbox',
     pathMatch: 'full',
   },
-  // {
-  //   path: 'folder/:folder',
-  //   loadComponent: () =>
-  //     import('./folder/folder.page').then((m) => m.FolderPage),
-  // },
   {
-    path: 'folder/info',
+    path: 'folder/libros',
     loadComponent: () =>
-      import('../app/components/card-info/card-info.component').then((m) => m.CardInfoComponent),
+      import('../app/pages/libros/libros-page.component').then((m) => m.LibrosPageComponent),
   },
 ];

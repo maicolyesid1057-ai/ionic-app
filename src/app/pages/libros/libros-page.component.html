@@ -1,0 +1,20 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Libros</ion-title>
+    </ion-toolbar>
+    <ion-searchbar [(ngModel)]="busqueda" placeholder="Buscar libro por título" />
+</ion-header>
+<ion-content>
+    <div class="lista-libros">
+        @for (libro of libros; track libro.titulo) {
+            @if (libro.titulo.toLowerCase().includes(busqueda.toLowerCase())) {
+                <app-card-info [libro]="libro"/>
+            }
+        }
+    </div>
+</ion-content>
+<!-- <p>Libros: {{ libros.length }}</p>
+
+@for (libro of libros; track $index) {
+    <p>{{ libro.titulo }}</p>
+} -->
