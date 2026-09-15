@@ -11,7 +11,7 @@ placeholder="Buscar libro por título"> </ion-searchbar> </ion-header>
 
   <div class="lista-libros">
 
-@for (libro of libros; track libro.titulo) {
+@for (libro of libros; track libro.titulo) { 
 
   @if (libro.titulo.toLowerCase().includes(busqueda.toLowerCase())) {
 
@@ -49,6 +49,7 @@ placeholder="Buscar libro por título"> </ion-searchbar> </ion-header>
   }
 
 }
+
 
   </div>
 

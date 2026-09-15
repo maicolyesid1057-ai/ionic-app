@@ -59,9 +59,10 @@ export class CardInfoComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+     console.log('🔥 INICIO LIBROS');
   this.librosService.obtenerLibros().subscribe({
     next: (respuesta) => {
-
+console.log('🔥 API RESPONDIÓ');
       console.log('RESPUESTA COMPLETA:', respuesta);
       console.log('DOCS:', respuesta.docs);
       console.log('PRIMER LIBRO:', respuesta.docs[0]);
@@ -76,12 +77,13 @@ export class CardInfoComponent implements OnInit {
           ? `https://covers.openlibrary.org/b/id/${libro.cover_i}-M.jpg`
           : ''
       }));
-
+console.log('🔥 LIBROS ASIGNADOS:', this.libros.length);
       console.log('LIBROS PARA MOSTRAR:', this.libros);
       console.log('CANTIDAD:', this.libros.length);
     },
 
     error: (error) => {
+      console.error('🔥 ERROR:', error);
       console.error('ERROR:', error);
     }
   });
