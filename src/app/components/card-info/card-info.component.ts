@@ -10,13 +10,7 @@ import {
   IonCardTitle,
   IonImg,
 } from '@ionic/angular';
-
-interface Libro {
-  titulo: string;
-  edicion: number;
-  descripcion: string;
-  caratula: string;
-}
+import { Libro } from '../../services/libro';
 
 @Component({
   selector: 'app-card-info',
@@ -35,7 +29,7 @@ interface Libro {
 export class CardInfoComponent {
 
   busqueda = '';
-  libro = input.required<Libro>();
+  libro = input<Libro>();
 
   constructor() 
   {}

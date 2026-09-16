@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import {
@@ -10,15 +10,11 @@ import {
     ToastController
 } from '@ionic/angular';
 
-import { LibrosService } from '../../services/libroservice';
+import { Doc, LibrosService } from '../../services/libroservice';
 import { CardInfoComponent } from "../../components/card-info/card-info.component";
-
-interface Libro {
-    titulo: string;
-    edicion: number;
-    descripcion: string;
-    caratula: string;
-}
+import { CommonModule } from '@angular/common';
+import { map, Observable } from 'rxjs';
+import { Libro } from '../../services/libro';
 
 @Component({
     selector: 'libros',
@@ -32,40 +28,25 @@ interface Libro {
         IonHeader,
         IonSearchbar,
         CardInfoComponent,
-        IonContent
+        IonContent,
+        CommonModule    
     ],
 })
 export class LibrosPageComponent implements OnInit {
 
     busqueda = '';
+    toastController =  inject(ToastController);
+    librosService =  inject(LibrosService);
 
-    libros: Libro[] = [];
+    data$: Observable<Libro[]>;
 
     constructor(
-        private toastController: ToastController,
-        private librosService: LibrosService
-    ) { }
+    ) { 
+        this.data$ = this.librosService.libros$;
+    }
 
     ngOnInit() {
-        this.librosService.obtenerLibros().subscribe({
-            next: (respuesta) => {
-                console.log('respuesta', respuesta)
-                this.libros = respuesta.docs.map((libro: any) => ({
-                    titulo: libro.title || 'Sin título',
-                    edicion: libro.first_publish_year || 0,
-                    descripcion: libro.author_name
-                        ? `Autor: ${libro.author_name.join(', ')}`
-                        : 'Autor desconocido',
-                    caratula: libro.cover_i
-                        ? `https://covers.openlibrary.org/b/id/${libro.cover_i}-M.jpg`
-                        : ''
-                }));
-                console.log('libros', this.libros)
-            },
-            error: (error) => {
-                console.error('ERROR:', error);
-            }
-        });
+        this.librosService.obtenerLibros().subscribe();
     }
 
     async agregar(libro: Libro) {
@@ -74,7 +55,6 @@ export class LibrosPageComponent implements OnInit {
             duration: 1500,
             position: 'top',
         });
-
         await toast.present();
     }
 }
