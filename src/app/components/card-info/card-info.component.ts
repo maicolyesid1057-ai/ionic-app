@@ -1,4 +1,4 @@
-import { Component, input, OnInit } from '@angular/core';
+import { Component, input, OnInit, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import {
@@ -24,13 +24,18 @@ import { Libro } from '../../services/libro';
     IonCardSubtitle,
     FormsModule,
     IonImg,
+    IonButton
   ],
 })
 export class CardInfoComponent {
 
-  busqueda = '';
+  agregarLibro = output<Libro>();
   libro = input<Libro>();
 
   constructor() 
   {}
+
+  agregar(libro: Libro){
+    this.agregarLibro.emit(libro)
+  }
 }

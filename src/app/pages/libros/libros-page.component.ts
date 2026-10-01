@@ -4,33 +4,32 @@ import { FormsModule } from '@angular/forms';
 import {
     IonContent,
     IonHeader,
-    IonSearchbar,
     IonTitle,
     IonToolbar,
     ToastController
 } from '@ionic/angular';
 
-import { Doc, LibrosService } from '../../services/libroservice';
+import { LibrosService } from '../../services/libroservice';
 import { CardInfoComponent } from "../../components/card-info/card-info.component";
 import { CommonModule } from '@angular/common';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Libro } from '../../services/libro';
+import { SearchFilterComponent } from '../../components/search-filter/search-filter.component';
 
 @Component({
     selector: 'libros',
     templateUrl: './libros-page.component.html',
     styleUrls: ['./libros-page.component.scss'],
     imports: [
-        IonSearchbar,
-        IonTitle,
-        IonToolbar,
-        FormsModule,
-        IonHeader,
-        IonSearchbar,
-        CardInfoComponent,
-        IonContent,
-        CommonModule    
-    ],
+    IonTitle,
+    IonToolbar,
+    FormsModule,
+    IonHeader,
+    CardInfoComponent,
+    IonContent,
+    CommonModule,
+    SearchFilterComponent
+],
 })
 export class LibrosPageComponent implements OnInit {
 
