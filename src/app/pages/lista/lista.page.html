@@ -1,0 +1,51 @@
+<ion-header>
+
+  <ion-toolbar>
+    <ion-title>Mi lista</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  @if (libros.length === 0) {
+
+    <p>No hay libros agregados.</p>
+
+  }
+
+  @for (libro of libros; track libro.titulo) {
+
+    <ion-card>
+
+      <ion-img [src]="libro.caratula"></ion-img>
+
+      <ion-card-header>
+
+        <ion-card-title>
+          {{ libro.titulo }}
+        </ion-card-title>
+
+      </ion-card-header>
+
+      <ion-card-content>
+
+        <p>
+          Autor: {{ libro.autor }}
+        </p>
+
+        <p>
+          Edición: {{ libro.edicion }}
+        </p>
+
+        <p>
+          {{ libro.descripcion }}
+        </p>
+
+      </ion-card-content>
+
+    </ion-card>
+
+  }
+
+</ion-content>

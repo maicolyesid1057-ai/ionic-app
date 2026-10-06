@@ -1,56 +1,32 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Libros</ion-title>
-  </ion-toolbar>
+@if (libro != undefined) {
 
-<ion-searchbar
-[(ngModel)]="busqueda"
-placeholder="Buscar libro por título"> </ion-searchbar> </ion-header>
+  <ion-card class="libro-card">
 
-<ion-content>
+    <ion-img
+      class="portada"
+      [src]="libro.caratula"
+    />
 
-  <div class="lista-libros">
+    <ion-card-header>
 
-@for (libro of libros; track libro.titulo) { 
+      <ion-card-title>
+        {{ libro.titulo }}
+      </ion-card-title>
 
-  @if (libro.titulo.toLowerCase().includes(busqueda.toLowerCase())) {
+      <ion-card-subtitle>
+        {{ libro.edicion }}
+      </ion-card-subtitle>
 
-    <ion-card class="libro-card">
+    </ion-card-header>
 
-      <ion-img
-        class="portada"
-        [src]="libro.caratula">
-      </ion-img>
+    <ion-card-content>
+      {{ libro.descripcion }}
+    </ion-card-content>
 
-      <ion-card-header>
+    <ion-button (click)="agregar()">
+      Agregar
+    </ion-button>
 
-        <ion-card-title>
-          {{ libro.titulo }}
-        </ion-card-title>
-
-        <ion-card-subtitle>
-          {{ libro.edicion }}
-        </ion-card-subtitle>
-
-      </ion-card-header>
-
-      <ion-card-content>
-        {{ libro.descripcion }}
-      </ion-card-content>
-
-      <ion-button
-        expand="block"
-        (click)="agregar(libro)">
-        Agregar
-      </ion-button>
-
-    </ion-card>
-
-  }
+  </ion-card>
 
 }
-
-
-  </div>
-
-</ion-content>

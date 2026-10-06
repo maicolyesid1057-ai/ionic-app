@@ -1,0 +1,33 @@
+<ion-header>
+
+  <ion-toolbar>
+    <ion-title>Libros</ion-title>
+  </ion-toolbar>
+
+  <ion-searchbar
+    [(ngModel)]="busqueda"
+    placeholder="Buscar libro por título">
+  </ion-searchbar>
+
+</ion-header>
+
+<ion-content>
+
+  <div class="lista-libros">
+
+    @for (libro of libros; track libro.titulo) {
+
+      @if (libro.titulo.toLowerCase().includes(busqueda.toLowerCase())) {
+
+        <app-card-info
+          [libro]="libro"
+          (agregarLibro)="recibirLibro($event)">
+        </app-card-info>
+
+      }
+
+    }
+
+  </div>
+
+</ion-content>
