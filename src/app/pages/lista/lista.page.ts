@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { LibrosService, Libro } from '../../services/libroservice';
+import { LibrosService } from '../../services/libroservice';
+import { Libro } from '../../services/libro';
 
 import {
   IonCard,
@@ -37,12 +38,10 @@ export class ListaPage implements OnInit {
     private librosService: LibrosService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
 
     this.libros = this.librosService.obtenerLibrosGuardados();
 
     console.log('Libros en lista:', this.libros);
-
   }
-
 }

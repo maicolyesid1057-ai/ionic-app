@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
-import { LibrosService, Libro } from '../../services/libroservice';
-
-import { CardInfoComponent } from '../../components/card-info/card-info.component';
 
 import {
     IonContent,
     IonHeader,
-    IonSearchbar,
     IonTitle,
     IonToolbar,
     ToastController
 } from '@ionic/angular';
+
+
+import { LibrosService } from '../../services/libroservice';
+import { CardInfoComponent } from "../../components/card-info/card-info.component";
+import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import { Libro } from '../../services/libro';
+import { SearchFilterComponent } from '../../components/search-filter/search-filter.component';
 
 
 @Component({
@@ -20,75 +23,43 @@ import {
     templateUrl: './libros-page.component.html',
     styleUrls: ['./libros-page.component.scss'],
     imports: [
-        IonSearchbar,
-        IonTitle,
-        IonToolbar,
-        FormsModule,
-        IonHeader,
-        CardInfoComponent,
-        IonContent
-    ],
+
+    IonTitle,
+    IonToolbar,
+    FormsModule,
+    IonHeader,
+    CardInfoComponent,
+    IonContent,
+    CommonModule,
+    SearchFilterComponent
+],
 })
 export class LibrosPageComponent implements OnInit {
 
     busqueda = '';
+    toastController =  inject(ToastController);
+    librosService =  inject(LibrosService);
 
-    libros: Libro[] = [];
+    data$: Observable<Libro[]>;
 
     constructor(
-        private toastController: ToastController,
-        private librosService: LibrosService
-    ) { }
+    ) { 
+        this.data$ = this.librosService.libros$;
+    }
 
 
     recibirLibro(libro: Libro) {
 
         console.log('Libro recibido:', libro);
 
-        this.librosService.agregarLibro(libro);
+        
 
     }
 
 
     ngOnInit() {
 
-        this.librosService.obtenerLibros().subscribe({
-
-            next: (respuesta) => {
-
-                console.log('respuesta', respuesta);
-
-                this.libros = respuesta.docs.map((libro: any) => ({
-
-                    titulo: libro.title || 'Sin título',
-
-                    autor: libro.author_name
-                        ? libro.author_name.join(', ')
-                        : 'Autor desconocido',
-
-                    edicion: libro.first_publish_year || null,
-
-                    descripcion: libro.author_name
-                        ? `Autor: ${libro.author_name.join(', ')}`
-                        : 'Autor desconocido',
-
-                    caratula: libro.cover_i
-                        ? `https://covers.openlibrary.org/b/id/${libro.cover_i}-M.jpg`
-                        : ''
-
-                }));
-
-                console.log('libros', this.libros);
-
-            },
-
-            error: (error) => {
-
-                console.error('ERROR:', error);
-
-            }
-
-        });
+        this.librosService.obtenerLibros().subscribe();
 
     }
 
@@ -104,8 +75,8 @@ export class LibrosPageComponent implements OnInit {
             position: 'top',
 
         });
-
         await toast.present();
+        this.librosService.guardarLibro(libro);
 
     }
 

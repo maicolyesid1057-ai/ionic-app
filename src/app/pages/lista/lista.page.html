@@ -1,50 +1,56 @@
 <ion-header>
-
   <ion-toolbar>
-    <ion-title>Mi lista</ion-title>
+    <ion-title>
+      Mis libros
+    </ion-title>
   </ion-toolbar>
-
 </ion-header>
 
 <ion-content>
 
-  @if (libros.length === 0) {
+  @if (libros.length > 0) {
 
-    <p>No hay libros agregados.</p>
+    @for (libro of libros; track libro.titulo) {
 
-  }
+      <ion-card>
 
-  @for (libro of libros; track libro.titulo) {
+        <ion-img
+          [src]="libro.caratula">
+        </ion-img>
 
-    <ion-card>
+        <ion-card-header>
 
-      <ion-img [src]="libro.caratula"></ion-img>
+          <ion-card-title>
+            {{ libro.titulo }}
+          </ion-card-title>
 
-      <ion-card-header>
+        </ion-card-header>
 
-        <ion-card-title>
-          {{ libro.titulo }}
-        </ion-card-title>
+        <ion-card-content>
 
-      </ion-card-header>
+          <p>
+            Autor: {{ libro.autor }}
+          </p>
 
-      <ion-card-content>
+          <p>
+            Año: {{ libro.edicion }}
+          </p>
 
-        <p>
-          Autor: {{ libro.autor }}
-        </p>
+          <p>
+            {{ libro.descripcion }}
+          </p>
 
-        <p>
-          Edición: {{ libro.edicion }}
-        </p>
+        </ion-card-content>
 
-        <p>
-          {{ libro.descripcion }}
-        </p>
+      </ion-card>
 
-      </ion-card-content>
+    }
 
-    </ion-card>
+  } @else {
+
+    <p style="text-align: center; padding: 20px;">
+      No tienes libros guardados.
+    </p>
 
   }
 

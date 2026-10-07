@@ -1,4 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+import { Component, input, OnInit, output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import {
   IonButton,
@@ -10,7 +12,7 @@ import {
   IonImg
 } from '@ionic/angular';
 
-import { Libro } from '../../services/libroservice';
+import { Libro } from '../../services/libro';
 
 @Component({
   selector: 'app-card-info',
@@ -23,19 +25,21 @@ import { Libro } from '../../services/libroservice';
     IonCardHeader,
     IonCardTitle,
     IonCardSubtitle,
-    IonImg
+    IonImg,
+    IonButton
   ],
 })
 export class CardInfoComponent {
 
-  @Input() libro!: Libro;
 
-  @Output() agregarLibro = new EventEmitter<Libro>();
+  agregarLibro = output<Libro>();
+  libro = input<Libro>();
 
-  agregar() {
+  constructor() 
+  {}
 
-    this.agregarLibro.emit(this.libro);
-
+  agregar(libro: Libro){
+    this.agregarLibro.emit(libro)
   }
 
 }

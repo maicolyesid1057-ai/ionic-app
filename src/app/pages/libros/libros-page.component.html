@@ -1,33 +1,19 @@
 <ion-header>
 
-  <ion-toolbar>
-    <ion-title>Libros</ion-title>
-  </ion-toolbar>
-
-  <ion-searchbar
-    [(ngModel)]="busqueda"
-    placeholder="Buscar libro por título">
-  </ion-searchbar>
-
+    <ion-toolbar>
+        <ion-title>Libros</ion-title>
+    </ion-toolbar>
+    <app-search-filter [(busqueda)]="busqueda" />
 </ion-header>
-
 <ion-content>
-
-  <div class="lista-libros">
-
-    @for (libro of libros; track libro.titulo) {
-
-      @if (libro.titulo.toLowerCase().includes(busqueda.toLowerCase())) {
-
-        <app-card-info
-          [libro]="libro"
-          (agregarLibro)="recibirLibro($event)">
-        </app-card-info>
-
-      }
-
-    }
-
-  </div>
-
+    <div class="lista-libros">
+        @if(data$ | async; as libros){
+            @for (libro of libros; track $index) {
+                @if (libro.titulo.toLowerCase().includes(busqueda.toLowerCase())) {
+                    <app-card-info [libro]="libro" (agregarLibro)="agregar(libro)"/>
+                }
+            }
+        }
+    </div>
 </ion-content>
+

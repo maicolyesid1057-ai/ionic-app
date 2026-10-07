@@ -1,29 +1,31 @@
-@if (libro != undefined) {
+@if (libro() != undefined) {
 
   <ion-card class="libro-card">
 
     <ion-img
       class="portada"
-      [src]="libro.caratula"
+      [src]="libro()!.caratula"
     />
 
     <ion-card-header>
 
       <ion-card-title>
-        {{ libro.titulo }}
+        {{ libro()!.titulo }}
       </ion-card-title>
 
       <ion-card-subtitle>
-        {{ libro.edicion }}
+        {{ libro()!.edicion }}
       </ion-card-subtitle>
 
     </ion-card-header>
 
     <ion-card-content>
-      {{ libro.descripcion }}
+      {{ libro()!.descripcion }}
     </ion-card-content>
 
-    <ion-button (click)="agregar()">
+    <ion-button
+      expand="block"
+      (click)="agregar(libro()!)">
       Agregar
     </ion-button>
 
