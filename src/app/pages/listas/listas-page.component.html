@@ -1,0 +1,36 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Listas</ion-title>
+    </ion-toolbar>
+    <app-search-filter [(busqueda)]="busqueda" placeholder="Buscar lista por titulo..."/>
+</ion-header>
+<ion-content>
+    <ion-list>
+        @if(data$ | async; as listas){
+            <p>listas : {{listas.length}}</p>
+            @for (lista of listas; track lista.id) {
+                @if (lista.nombre.toLowerCase().includes(busqueda.toLowerCase())) {
+                    <ion-item>
+                        <ion-avatar slot="start">
+                            <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Profile">
+                        </ion-avatar>
+                        <ion-label>
+                            <h2>{{lista.nombre}}</h2>
+                            <p>{{lista.cantidad}} libros</p>
+                        </ion-label>
+                    </ion-item>
+                }
+            }
+        }
+    </ion-list>
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+        <ion-fab-button id="open-modal">
+            <ion-icon name="add"/>
+        </ion-fab-button>
+    </ion-fab>
+    <ion-modal trigger="open-modal" >
+        <ng-template>
+            <app-crear-lista (cancelar)="cancel()" (confirmar)="confirm($event)"/>
+        </ng-template>
+    </ion-modal>
+</ion-content>

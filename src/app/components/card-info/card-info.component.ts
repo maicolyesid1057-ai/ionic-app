@@ -1,4 +1,4 @@
-import { Component, input, OnInit, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import {
@@ -10,7 +10,7 @@ import {
   IonCardTitle,
   IonImg,
 } from '@ionic/angular';
-import { Libro } from '../../services/libro';
+import { Libro } from '../../services/libro/libro';
 
 @Component({
   selector: 'app-card-info',

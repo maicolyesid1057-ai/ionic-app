@@ -2,16 +2,25 @@
     <ion-toolbar>
         <ion-title>Libros</ion-title>
     </ion-toolbar>
-    <app-search-filter [(busqueda)]="busqueda" />
+    <app-search-filter [(busqueda)]="busqueda" placeholder="Buscar libro por titulo.."/>
 </ion-header>
 <ion-content>
     <div class="lista-libros">
-        @if(data$ | async; as libros){
+        @if( data$ | async; as libros){
             @for (libro of libros; track $index) {
                 @if (libro.titulo.toLowerCase().includes(busqueda.toLowerCase())) {
                     <app-card-info [libro]="libro" (agregarLibro)="agregar(libro)"/>
                 }
             }
         }
+        
     </div>
+    <ion-infinite-scroll
+        threshold="100px"
+        [disabled]="!hayMasLibros"
+        (ionInfinite)="cargarMasLibros($event)">
+        <ion-infinite-scroll-content
+            loadingSpinner="crescent"
+            loadingText="Cargando Libros..."/>
+  </ion-infinite-scroll>
 </ion-content>

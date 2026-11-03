@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, IonRouterLink } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { bookmarkOutline, bookmarkSharp, bookOutline, bookSharp } from 'ionicons/icons';
+import { add, bookmarkOutline, bookmarkSharp, bookOutline, bookSharp } from 'ionicons/icons';
 
 @Component({
   selector: 'app-root',
@@ -31,6 +31,6 @@ export class AppComponent {
   ];
   protected readonly labels = ['Favorites'];
   constructor() {
-    addIcons({ bookOutline, bookSharp, bookmarkOutline, bookmarkSharp });
+    addIcons({ bookOutline, bookSharp, bookmarkOutline, bookmarkSharp, add });
   }
 }

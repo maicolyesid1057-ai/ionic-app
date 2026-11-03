@@ -13,6 +13,7 @@ import { IonSearchbar } from "@ionic/angular";
 })
 export class SearchFilterComponent {
   busqueda = model('');
+  placeholder = input('Buscar...');
 
   constructor() 
   {}
