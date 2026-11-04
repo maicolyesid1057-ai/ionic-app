@@ -1,7 +1,7 @@
 
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, IonRouterLink } from '@ionic/angular';
+import { IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, IonRouterLink, IonButtons, IonButton } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { add, bookmarkOutline, bookmarkSharp, bookOutline, bookSharp } from 'ionicons/icons';
 
@@ -11,6 +11,7 @@ import { add, bookmarkOutline, bookmarkSharp, bookOutline, bookSharp } from 'ion
   styleUrls: ['app.component.scss'],
   imports: [
     RouterLink, 
+     IonButtons,
     RouterLinkActive, 
     IonApp, 
     IonSplitPane, 
