@@ -1,3 +1,154 @@
-<p>
-  login works!
-</p>
+
+<ion-content class="login-content">
+  <div class="login-container">
+
+    <ion-card class="login-card">
+      <ion-card-header>
+        <div class="icono-login">
+          <ion-icon name="person-circle-outline"></ion-icon>
+        </div>
+
+        <ion-card-title>
+          {{ modoRegistro ? 'Crear cuenta' : 'Bienvenido' }}
+        </ion-card-title>
+
+        <ion-card-subtitle>
+          {{
+            modoRegistro
+              ? 'Regístrate para comenzar'
+              : 'Ingresa tus credenciales'
+          }}
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form (ngSubmit)="enviarFormulario()" #formulario="ngForm">
+
+          <ion-item *ngIf="modoRegistro">
+            <ion-icon
+              name="person-outline"
+              slot="start">
+            </ion-icon>
+
+            <ion-input
+              label="Nombre completo"
+              labelPlacement="floating"
+              name="nombre"
+              [(ngModel)]="nombre"
+              required
+              minlength="2"
+              autocomplete="name">
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon
+              name="mail-outline"
+              slot="start">
+            </ion-icon>
+
+            <ion-input
+              type="email"
+              label="Correo electrónico"
+              labelPlacement="floating"
+              name="email"
+              [(ngModel)]="email"
+              required
+              email
+              autocomplete="email">
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-icon
+              name="lock-closed-outline"
+              slot="start">
+            </ion-icon>
+
+            <ion-input
+              type="password"
+              label="Contraseña"
+              labelPlacement="floating"
+              name="password"
+              [(ngModel)]="password"
+              required
+              [minlength]="modoRegistro ? 6 : 1"
+              [autocomplete]="modoRegistro
+                ? 'new-password'
+                : 'current-password'">
+            </ion-input>
+          </ion-item>
+
+          <ion-item *ngIf="modoRegistro">
+            <ion-icon
+              name="shield-checkmark-outline"
+              slot="start">
+            </ion-icon>
+
+            <ion-input
+              type="password"
+              label="Confirmar contraseña"
+              labelPlacement="floating"
+              name="confirmarPassword"
+              [(ngModel)]="confirmarPassword"
+              required
+              minlength="6"
+              autocomplete="new-password">
+            </ion-input>
+          </ion-item>
+
+          <ion-text
+            *ngIf="mensaje"
+            [color]="tipoMensaje === 'error' ? 'danger' : 'success'">
+            <p class="mensaje">{{ mensaje }}</p>
+          </ion-text>
+
+          <ion-button
+            expand="block"
+            type="submit"
+            class="boton-principal"
+            [disabled]="cargando || formulario.invalid">
+
+            <ion-spinner
+              *ngIf="cargando"
+              name="crescent">
+            </ion-spinner>
+
+            <span *ngIf="!cargando">
+              {{
+                modoRegistro
+                  ? 'Registrarme'
+                  : 'Iniciar sesión'
+              }}
+            </span>
+          </ion-button>
+
+        </form>
+
+        <div class="cambiar-modo">
+          <ion-text>
+            {{
+              modoRegistro
+                ? '¿Ya tienes una cuenta?'
+                : '¿Todavía no tienes una cuenta?'
+            }}
+          </ion-text>
+
+          <ion-button
+            fill="clear"
+            size="small"
+            (click)="cambiarModo()"
+            [disabled]="cargando">
+            {{
+              modoRegistro
+                ? 'Inicia sesión'
+                : 'Regístrate'
+            }}
+          </ion-button>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>

@@ -2,7 +2,28 @@ import { Component, inject, OnInit, ViewChild } from "@angular/core";
 import { Observable } from "rxjs";
 import { Lista, ListaCrear } from "../../services/lista/lista";
 import { AsyncPipe } from "@angular/common";
-import { IonContent, IonHeader, IonItem, IonLabel, IonList, IonTitle, IonToolbar, IonAvatar, IonFab, IonFabButton, IonIcon, IonModal, ToastController } from "@ionic/angular";
+import { InfiniteScrollCustomEvent,
+    IonContent,
+    IonHeader,
+    IonInfiniteScroll,
+    IonInfiniteScrollContent,
+    IonTitle,
+    IonToolbar,
+    ToastController,IonApp,
+    IonMenu,
+    IonList,
+    IonItem,
+    IonIcon,
+    IonButton,
+    IonAvatar,
+    IonFab,
+    IonFabButton,
+     IonModal,
+    IonLabel,
+    IonButtons,
+    IonMenuToggle,
+    IonSplitPane,IonMenuButton,
+    IonRouterOutlet } from "@ionic/angular";
 import { SearchFilterComponent } from "../../components/search-filter/search-filter.component";
 import { ListaService } from "../../services/lista/lista-service";
 import { CrearListaComponent } from "../../components/crear-lista/crear-lista.component";
@@ -14,7 +35,7 @@ import { Router } from "@angular/router";
     styleUrl: './listas-page.component.scss',
     imports: [
     AsyncPipe,
-    IonList,
+    IonList,IonMenuButton,
     IonHeader,
     IonToolbar,
     IonTitle,
@@ -28,6 +49,8 @@ import { Router } from "@angular/router";
     IonIcon,
     IonModal,
     CrearListaComponent,
+    IonButtons,
+    IonButtons
 ]
 })
 export class ListasPageComponent implements OnInit {
