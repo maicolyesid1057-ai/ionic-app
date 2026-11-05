@@ -30,12 +30,18 @@ import { Libro } from '../../services/libro/libro';
 export class CardInfoComponent {
 
   agregarLibro = output<Libro>();
+  eliminarLibro = output<Libro>();
   libro = input<Libro>();
+  botonTitulo = input<string>("Agregar");
 
   constructor() 
   {}
 
   agregar(libro: Libro){
     this.agregarLibro.emit(libro)
+  }
+
+  eliminar(libro: Libro){
+    this.eliminarLibro.emit(libro)
   }
 }

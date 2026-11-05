@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { Libro } from './libro';
 
-export interface Doc {
+export interface DocLibro {
   id: number;
   title: string;
   content: string;
@@ -32,7 +32,7 @@ export class LibrosService {
             .set('page', pagina)
             .set('limit', cantidad);
         
-        return this.http.get<{docs: Doc[]}>(this.apiUrl, {params}).pipe(
+        return this.http.get<{docs: DocLibro[]}>(this.apiUrl, {params}).pipe(
             map(res => res.docs),
             tap(docs => {
                 const librosActules = this.librosSubject.value;

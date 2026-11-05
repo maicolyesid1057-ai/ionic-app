@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, forkJoin, map, Observable, of, tap } from 'rxjs';
-import { Lista } from './lista';
+import { Lista, ListaCrear } from './lista';
+import { Libro } from '../libro/libro';
+import { DocLibro } from '../libro/libro-service';
 
-export interface Doc {
+export interface DocList {
   name: string,
   full_url: string,
   last_update: Date,
@@ -12,29 +14,37 @@ export interface Doc {
   picture: string
 }
 
+export interface DocListDetalle {
+  id: number;
+  title: string;
+  content: string;
+  category: string;
+  first_publish_year: number;
+  picture: string;
+  type: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
 export class ListaService {
 
     private apiUrl = 'http://openlibrary.org/people';
+    private apiUrlList = 'https://localhost:7259/api/listas'
     private storageKey = 'mis-listas'
 
     private listaSubject = new BehaviorSubject<Lista[]>([]);
     listas$ = this.listaSubject.asObservable();
 
+    private listaDetalleSubject = new BehaviorSubject<Libro[]>([]);
+    detallesLista$ = this.listaDetalleSubject.asObservable();
+
     constructor(private http: HttpClient) { }
 
-    obtenerListasLocales(): Lista []
-    {
-        const datos =localStorage.getItem(this.storageKey)
-        return datos ? JSON.parse(datos) : []
-    }
-
     obtenerListas(): Observable<any> {
-        const url = `${this.apiUrl}/george08/lists.json`;
+        const url = `${this.apiUrl}/miguel_zambrano231/lists.json`;
 
-        return this.http.get<{entries: Doc[]}>(url).pipe(
+        return this.http.get<{entries: DocList[]}>(url).pipe(
             map(res => res.entries),
             map(docs => {
                 return docs.map((doc): Lista => ({
@@ -45,32 +55,14 @@ export class ListaService {
                     origen: 'openLibrary',
                     libros : []
                 }))
-            }))
-    }
-
-    obtenerTodasLasListas():Observable<Lista[]>{
-        return forkJoin({
-            locales: of(this.obtenerListasLocales()),
-            openLibrary: this.obtenerListas()
-        }).pipe(
-            map(resultado => [
-                ...resultado.locales,
-                ...resultado.openLibrary
-            ]),
-            tap(listas => {
-                console.log('listas', listas)
-                this.listaSubject.next(listas)
-            })
+            }),
+            tap(list => this.listaSubject.next(list))
         )
     }
 
-    crearLista(lista: Lista): Lista{
-        const listas = this.obtenerListasLocales();
-        listas.push(lista)
-
-        this.guardarListasLocales(listas);
-
-        return lista;
+    crearLista(lista: ListaCrear): Observable<any>
+    {
+        return this.http.post(this.apiUrlList, lista)
     }
 
     private guardarListasLocales(listas : Lista[]){
@@ -78,9 +70,25 @@ export class ListaService {
     }
 
     eliminarLista(id : string){
-        const listas =  this.obtenerListasLocales()
-        .filter(lista => lista.id != id)
+        
+    }
 
-        this.guardarListasLocales(listas);
+    obtenerListaDetalles(idLista: string): Observable<any>{
+        const url = `${this.apiUrl}/george08/lists/${idLista}/seeds.json`;
+        return this.http.get<{entries: DocListDetalle[]}>(url).pipe(
+            map(respuesta =>
+                (respuesta.entries ?? []).map((item: any) =>
+                ({
+                    autor: 'Consultar información',
+                    titulo: item.title || 'Sin título',
+                    edicion: item.first_publish_year || 0,
+                    descripcion: item.type || '',
+                    caratula: item.picture?.url
+                        ? `https://${item.picture?.url}`
+                        : ''
+                }))   
+            ),
+            tap(detalles => this.listaDetalleSubject.next(detalles))
+        )
     }
 }

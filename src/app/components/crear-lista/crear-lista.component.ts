@@ -1,7 +1,7 @@
 import { Component, output } from "@angular/core";
 import { FormBuilder, ReactiveFormsModule, Validators, ɵInternalFormsSharedModule } from "@angular/forms";
 import { IonButton, IonButtons, IonContent, IonHeader, IonInput, IonItem, IonTitle, IonToolbar } from "@ionic/angular";
-import { Lista } from "../../services/lista/lista";
+import { Lista, ListaCrear } from "../../services/lista/lista";
 
 @Component({
     selector :'app-crear-lista',
@@ -24,7 +24,7 @@ export class CrearListaComponent{
     private fb = new FormBuilder();
     
     cancelar = output()
-    confirmar = output<Lista>()
+    confirmar = output<ListaCrear>()
 
     listaForm = this.fb.group({
         nombre: [null, Validators.required],
@@ -44,13 +44,10 @@ export class CrearListaComponent{
             return;
         }
 
-        var nuevaLista : Lista = {
-            id: Date.now.toString(),
-            descripcion : this.listaForm.controls["descripcion"].value!,
-            nombre: this.listaForm.controls["nombre"].value!,
-            cantidad: 0,
-            libros: [],
-            origen: 'local'
+        var nuevaLista : ListaCrear = {
+            
+            description : this.listaForm.controls["descripcion"].value!,
+            name: this.listaForm.controls["nombre"].value!
         }
         this.confirmar.emit(nuevaLista)
     }

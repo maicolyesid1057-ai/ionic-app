@@ -1,11 +1,12 @@
 import { Component, inject, OnInit, ViewChild } from "@angular/core";
 import { Observable } from "rxjs";
-import { Lista } from "../../services/lista/lista";
+import { Lista, ListaCrear } from "../../services/lista/lista";
 import { AsyncPipe } from "@angular/common";
 import { IonContent, IonHeader, IonItem, IonLabel, IonList, IonTitle, IonToolbar, IonAvatar, IonFab, IonFabButton, IonIcon, IonModal, ToastController } from "@ionic/angular";
 import { SearchFilterComponent } from "../../components/search-filter/search-filter.component";
 import { ListaService } from "../../services/lista/lista-service";
 import { CrearListaComponent } from "../../components/crear-lista/crear-lista.component";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-listas',
@@ -30,6 +31,7 @@ import { CrearListaComponent } from "../../components/crear-lista/crear-lista.co
 ]
 })
 export class ListasPageComponent implements OnInit {
+    router = inject(Router)
     listaService = inject(ListaService)
     toastController =  inject(ToastController);
     listas: Lista[] = []
@@ -53,15 +55,21 @@ export class ListasPageComponent implements OnInit {
     }
 
     cargarListas():void{
-        this.listaService.obtenerTodasLasListas().subscribe();
+        this.listaService.obtenerListas().subscribe();
     }
 
     cancel() {
         this.modal.dismiss(null, 'cancel');
     }
 
-    confirm(lista : Lista) {
-        this.listaService.crearLista(lista);
+    confirm(lista : ListaCrear) {
+        this.listaService.crearLista(lista).subscribe({
+            next: respuesta =>
+                console.log('respuesta creacion lista', respuesta)
+            ,
+            error : err => 
+                console.error('error creacion lista', err)
+        });
         this.cargarListas();
         this.modal.dismiss(this.name, 'confirm');
     }
@@ -73,5 +81,9 @@ export class ListasPageComponent implements OnInit {
             position: 'top',
         });
         await toast.present();
+    }
+
+    detalles(listaId: string ){
+        this.router.navigate(['listas/detalle', listaId]);
     }
 }
