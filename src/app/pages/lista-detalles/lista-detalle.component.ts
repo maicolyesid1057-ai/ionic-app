@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, RouterLink } from "@angular/router";
 import { Observable } from "rxjs";
 import { Libro } from "../../services/libro/libro";
-import { IonContent, IonHeader, IonTitle, IonToolbar } from "@ionic/angular";
+import { IonContent, IonHeader, IonItem, IonLabel, IonTitle, IonToolbar } from "@ionic/angular";
 import { FormsModule } from "@angular/forms";
 import { CardInfoComponent } from "../../components/card-info/card-info.component";
 import { CommonModule } from "@angular/common";
@@ -12,7 +12,7 @@ import { ListaService } from "../../services/lista/lista-service";
 @Component({
     selector: 'app-lista-detalle',
     templateUrl : 'lista-detalle.Component.html',
-    styleUrls : [],
+    styleUrl : 'lista-detalle.component.scss',
     imports: [
         IonTitle,
         IonToolbar,
@@ -20,15 +20,17 @@ import { ListaService } from "../../services/lista/lista-service";
         IonHeader,
         CardInfoComponent,
         IonContent,
-        CommonModule
+        CommonModule,
+        IonLabel,
+        RouterLink
     ]
 })
 export class ListaDetalleComponent implements OnInit{
     route = inject(ActivatedRoute)
     listaService = inject(ListaService)
     data$ : Observable<Libro[]>
-    busqueda = ''
-    nombrelista = ''
+    busqueda = '';
+    nombrelista: string | null = ''
 
     constructor()
     {
@@ -37,7 +39,8 @@ export class ListaDetalleComponent implements OnInit{
 
     ngOnInit(): void {
         const id = this.route.snapshot.paramMap.get('id');
-        console.log('id', id)
+        const nombreParam = this.route.snapshot.paramMap.get('nombre');
+        this.nombrelista = nombreParam;
         this.listaService.obtenerListaDetalles(id!).subscribe();
     }
 

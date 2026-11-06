@@ -7,12 +7,18 @@
 <ion-content>
     <div class="lista-libros">
         @if( data$ | async; as libros){
-            @for (libro of libros; track $index) {
+            @if(libros.length > 0) {
+                @for (libro of libros; track $index) {
                 @if (libro.titulo.toLowerCase().includes(busqueda.toLowerCase())) {
                     <app-card-info [libro]="libro" (eliminarLibro)="eliminar($event)" [botonTitulo]="'Eliminar'"/>
                 }
+            }}
+            @else {
+                <div class="contenedor">
+                    <p>Aún no existen libros agrega dando clic <ion-label [routerLink]="['/libros']" class="enlace">aquí</ion-label></p>
+                </div>
+                
             }
         }
-        
     </div>
 </ion-content>

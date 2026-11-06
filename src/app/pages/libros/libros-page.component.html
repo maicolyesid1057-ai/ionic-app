@@ -12,7 +12,6 @@
 
 <ion-content>
     <div class="lista-libros">
-
         @if(data$ | async; as libros) {
             @for (libro of libros; track $index) {
                 @if (libro.titulo.toLowerCase().includes(busqueda.toLowerCase())) {
@@ -23,9 +22,7 @@
                 }
             }
         }
-
     </div>
-
     <ion-infinite-scroll
         threshold="100px"
         (ionInfinite)="cargarMasLibros($event)"

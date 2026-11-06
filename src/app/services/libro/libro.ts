@@ -1,7 +1,7 @@
 export interface Libro {
+    id: string;
     titulo: string;
     autor: string;
     edicion: number | null;
-    descripcion: string;
     caratula: string;
 }

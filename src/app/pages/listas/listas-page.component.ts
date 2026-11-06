@@ -106,7 +106,7 @@ export class ListasPageComponent implements OnInit {
         await toast.present();
     }
 
-    detalles(listaId: string ){
-        this.router.navigate(['listas/detalle', listaId]);
+    detalles(lista: Lista ){
+        this.router.navigate(['listas/detalle', lista.id, lista.nombre ]);
     }
 }

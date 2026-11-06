@@ -1,15 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import {
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonCardSubtitle,
-  IonCardTitle,
-  IonImg,
-} from '@ionic/angular';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonImg, IonIcon } from '@ionic/angular';
 import { Libro } from '../../services/libro/libro';
 
 @Component({
@@ -24,8 +16,9 @@ import { Libro } from '../../services/libro/libro';
     IonCardSubtitle,
     FormsModule,
     IonImg,
-    IonButton
-  ],
+    IonButton,
+    IonIcon
+],
 })
 export class CardInfoComponent {
 

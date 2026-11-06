@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, forkJoin, map, Observable, of, tap } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { Lista, ListaCrear } from './lista';
 import { Libro } from '../libro/libro';
-import { DocLibro } from '../libro/libro-service';
 
 export interface DocList {
   name: string,
@@ -28,10 +27,10 @@ export interface DocListDetalle {
     providedIn: 'root'
 })
 export class ListaService {
-
+    http = inject(HttpClient)
     private apiUrl = 'http://openlibrary.org/people';
+    // private apiUrlList = 'https://openlibraryapi-f3ghbxe3gtatfcb3.westus3-01.azurewebsites.net/api/listas';
     private apiUrlList = 'https://localhost:7259/api/listas'
-    private storageKey = 'mis-listas'
 
     private listaSubject = new BehaviorSubject<Lista[]>([]);
     listas$ = this.listaSubject.asObservable();
@@ -39,10 +38,10 @@ export class ListaService {
     private listaDetalleSubject = new BehaviorSubject<Libro[]>([]);
     detallesLista$ = this.listaDetalleSubject.asObservable();
 
-    constructor(private http: HttpClient) { }
+    constructor() { }
 
-    obtenerListas(): Observable<any> {
-        const url = `${this.apiUrl}/miguel_zambrano231/lists.json`;
+    obtenerListas(): Observable<Lista[]> {
+        const url = `${this.apiUrlList}`;
 
         return this.http.get<{entries: DocList[]}>(url).pipe(
             map(res => res.entries),
@@ -65,20 +64,26 @@ export class ListaService {
         return this.http.post(this.apiUrlList, lista)
     }
 
-    private guardarListasLocales(listas : Lista[]){
-        localStorage.setItem(this.storageKey, JSON.stringify(listas))
-    }
-
     eliminarLista(id : string){
         
     }
 
+    agregarLibro(listaId: string, libroKey: string){
+        return this.http.post(`${this.apiUrlList}/${encodeURIComponent(listaId)}`,{
+            key: libroKey
+        },
+        {
+            responseType: 'text'
+        })
+    }
+
     obtenerListaDetalles(idLista: string): Observable<any>{
-        const url = `${this.apiUrl}/george08/lists/${idLista}/seeds.json`;
+        const url = `${this.apiUrlList}/${idLista}/libros`;
         return this.http.get<{entries: DocListDetalle[]}>(url).pipe(
             map(respuesta =>
                 (respuesta.entries ?? []).map((item: any) =>
                 ({
+                    id: item.id, 
                     autor: 'Consultar información',
                     titulo: item.title || 'Sin título',
                     edicion: item.first_publish_year || 0,
