@@ -95,9 +95,6 @@ export class LoginComponent {
     this.cargando = true;
 
     try {
-
-    
-
       if (this.modoRegistro) {
 
         if (!this.nombre.trim()) {
@@ -129,21 +126,11 @@ export class LoginComponent {
 
         await signOut(auth);
 
-        
-        this.modoRegistro = false;
-
-        
-        this.nombre = '';
-        this.password = '';
-        this.confirmarPassword = '';
-
         this.mensaje = '¡Cuenta creada correctamente! Ahora inicia sesión.';
         this.tipoMensaje = 'success';
 
+        this.cambiarModo();
       }
-
-     
-
       else {
 
         if (!this.email.trim() || !this.password) {

@@ -7,8 +7,6 @@ export const routes: Routes = [
       import('./pages/login/login.component')
         .then(m => m.LoginComponent)
   },
- 
-  
   {
     path: 'libros',
     loadComponent: () =>
