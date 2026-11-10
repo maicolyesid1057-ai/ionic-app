@@ -1,9 +1,8 @@
 
 <ion-app>
-
   <ion-split-pane contentId="main-content" when="lg">
 
-    <!-- MENÚ LATERAL -->
+    
     <ion-menu
       contentId="main-content"
       menuId="main-menu"
@@ -12,43 +11,52 @@
 
       <ion-content>
 
-        <ion-list id="inbox-list">
+        <div class="menu-container">
 
-          @for (p of appPages; track p) {
+          <ion-list id="inbox-list">
 
-            <ion-menu-toggle auto-hide="true">
+            @for (p of appPages; track p) {
+              <ion-menu-toggle auto-hide="true">
+                <ion-item
+                  [routerLink]="[p.url]"
+                  routerDirection="root"
+                  lines="none"
+                  detail="false"
+                  routerLinkActive="selected">
 
-              <ion-item
-                [routerLink]="[p.url]"
-                routerDirection="root"
-                lines="none"
-                detail="false"
-                routerLinkActive="selected">
+                  <ion-icon
+                    aria-hidden="true"
+                    slot="start"
+                    [ios]="p.icon + '-outline'"
+                    [md]="p.icon + '-sharp'">
+                  </ion-icon>
 
-                <ion-icon
-                  aria-hidden="true"
-                  slot="start"
-                  [ios]="p.icon + '-outline'"
-                  [md]="p.icon + '-sharp'">
-                </ion-icon>
+                  <ion-label>{{ p.title }}</ion-label>
+                </ion-item>
+              </ion-menu-toggle>
+            }
 
-                <ion-label>{{ p.title }}</ion-label>
+          </ion-list>
 
-              </ion-item>
+          <div class="logout-container">
+            <ion-button
+              expand="block"
+              color="danger"
+              fill="outline"
+              (click)="cerrarSesion()">
 
-            </ion-menu-toggle>
+              <ion-icon name="log-out-outline" slot="start"></ion-icon>
+              Cerrar sesión
 
-          }
+            </ion-button>
+          </div>
 
-        </ion-list>
+        </div>
 
       </ion-content>
-
     </ion-menu>
 
-    <!-- CONTENIDO DE LAS PÁGINAS -->
     <ion-router-outlet id="main-content"></ion-router-outlet>
 
   </ion-split-pane>
-
 </ion-app>

@@ -1,10 +1,14 @@
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {signInWithEmailAndPassword,
+
+import {
+  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  updateProfile} from 'firebase/auth';
+  updateProfile,
+  signOut
+} from 'firebase/auth';
 
 import { auth } from '../../firebase';
 import { Router } from '@angular/router';
@@ -21,6 +25,13 @@ import { IonText } from '@ionic/angular/ion-text';
 import { IonButton } from '@ionic/angular/ion-button';
 import { IonIcon } from '@ionic/angular/ion-icon';
 import { IonSpinner } from '@ionic/angular/ion-spinner';
+
+import { addIcons } from 'ionicons';
+import {
+  lockClosedOutline,
+  personCircleOutline,
+  mailOutline
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-login',
@@ -45,6 +56,7 @@ import { IonSpinner } from '@ionic/angular/ion-spinner';
   ]
 })
 export class LoginComponent {
+
   nombre = '';
   email = '';
   password = '';
@@ -55,7 +67,15 @@ export class LoginComponent {
   tipoMensaje: 'error' | 'success' = 'error';
   cargando = false;
 
-  constructor(private router: Router) {}
+  private router = inject(Router);
+
+  constructor() {
+    addIcons({
+      'lock-closed-outline': lockClosedOutline,
+      'person-circle-outline': personCircleOutline,
+      'mail-outline': mailOutline
+    });
+  }
 
   cambiarModo(): void {
     this.modoRegistro = !this.modoRegistro;
@@ -67,6 +87,7 @@ export class LoginComponent {
   }
 
   async enviarFormulario(): Promise<void> {
+
     this.mensaje = '';
 
     if (this.cargando) return;
@@ -74,7 +95,11 @@ export class LoginComponent {
     this.cargando = true;
 
     try {
+
+    
+
       if (this.modoRegistro) {
+
         if (!this.nombre.trim()) {
           throw new Error('Escribe tu nombre.');
         }
@@ -88,9 +113,7 @@ export class LoginComponent {
         }
 
         if (this.password.length < 6) {
-          throw new Error(
-            'La contraseña debe tener al menos 6 caracteres.'
-          );
+          throw new Error('La contraseña debe tener al menos 6 caracteres.');
         }
 
         const credencial = await createUserWithEmailAndPassword(
@@ -99,61 +122,87 @@ export class LoginComponent {
           this.password
         );
 
+     
         await updateProfile(credencial.user, {
           displayName: this.nombre.trim()
         });
 
-        this.mensaje = '¡Cuenta creada correctamente! Ahora inicia sesión.';
-        this.tipoMensaje = 'success';
+        await signOut(auth);
 
-        // Regresar al formulario de inicio de sesión.
+        
         this.modoRegistro = false;
+
+        
+        this.nombre = '';
         this.password = '';
         this.confirmarPassword = '';
 
-        await this.router.navigate(['/login'], {
-          state: {
-            mensaje: this.mensaje,
-            tipoMensaje: this.tipoMensaje
-          }
-        });
+        this.mensaje = '¡Cuenta creada correctamente! Ahora inicia sesión.';
+        this.tipoMensaje = 'success';
 
-      } else {
+      }
+
+     
+
+      else {
+
+        if (!this.email.trim() || !this.password) {
+          throw new Error('Ingresa tu correo y contraseña.');
+        }
+
         const credencial = await signInWithEmailAndPassword(
           auth,
           this.email.trim(),
           this.password
         );
 
-        this.mensaje = `¡Bienvenido${credencial.user.displayName
-          ? ', ' + credencial.user.displayName
-          : ''}!`;
+        this.mensaje = `¡Bienvenido${
+          credencial.user.displayName
+            ? ', ' + credencial.user.displayName
+            : ''
+        }!`;
+
         this.tipoMensaje = 'success';
 
-        // Ir a la pantalla principal de libros.
-        await this.router.navigate(['/folder/libros']);
+        await this.router.navigateByUrl('/libros');
+
       }
 
     } catch (error: unknown) {
+
+      console.error('ERROR COMPLETO DE FIREBASE:', error);
+
       const codigo = (error as { code?: string }).code;
+
+      console.error('CÓDIGO FIREBASE:', codigo);
 
       const errores: Record<string, string> = {
         'auth/invalid-credential':
           'Correo o contraseña incorrectos.',
+
         'auth/user-not-found':
           'No existe una cuenta con ese correo.',
+
         'auth/wrong-password':
           'La contraseña es incorrecta.',
+
         'auth/email-already-in-use':
           'Este correo ya está registrado.',
+
         'auth/invalid-email':
           'El correo electrónico no es válido.',
+
         'auth/weak-password':
           'La contraseña debe tener al menos 6 caracteres.',
+
         'auth/too-many-requests':
           'Demasiados intentos. Intenta más tarde.',
+
         'auth/network-request-failed':
-          'Error de conexión. Comprueba tu internet.'
+          'Error de conexión. Comprueba tu internet.',
+
+        'auth/operation-not-allowed':
+          'El registro con correo y contraseña está deshabilitado.'
       };
 
       this.mensaje =
@@ -166,7 +215,9 @@ export class LoginComponent {
       this.tipoMensaje = 'error';
 
     } finally {
+
       this.cargando = false;
+
     }
   }
 }
