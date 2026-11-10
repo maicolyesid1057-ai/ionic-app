@@ -1,0 +1,23 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-button (click)="cancel()">Cancelar</ion-button>
+        </ion-buttons>
+        <ion-title>Nueva Lista</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="confirm()" [strong]="true">Confirmar</ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding" style="height: 500px; max-height: 90%;">
+    <form [formGroup]="listaForm">
+        <ion-item>
+            <ion-input formControlName="nombre" label="Ingrese el nombre" labelPlacement="stacked" type="text"
+                placeholder="Nombre" />
+        </ion-item>
+        <ion-item>
+            <ion-input formControlName="descripcion" label="Ingrese la descripción" labelPlacement="stacked" type="text"
+                placeholder="Descripción" />
+        </ion-item>
+    </form>
+</ion-content>

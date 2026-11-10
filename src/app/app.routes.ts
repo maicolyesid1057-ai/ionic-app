@@ -1,14 +1,22 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  {
+    {
     path: '',
-    redirectTo: 'folder/Inbox',
-    pathMatch: 'full',
+    loadComponent: () =>
+      import('./pages/login/login.component')
+        .then(m => m.LoginComponent)
+  },
+ 
+  
+  {
+    path: 'libros',
+    loadComponent: () =>
+      import('../app/pages/libros/libros-page.component').then((m) => m.LibrosPageComponent),
   },
   {
-    path: 'folder/:folder',
+    path: 'listas',
     loadComponent: () =>
-      import('./folder/folder.page').then((m) => m.FolderPage),
+      import('../app/pages/listas/listas-page.component').then((m) => m.ListasPageComponent),
   },
 ];

@@ -1,0 +1,12 @@
+.enlace {
+    color: var(--ion-color-primary);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}

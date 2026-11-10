@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-
+import { provideHttpClient } from '@angular/common/http';
 import { FolderPage } from './folder.page';
 
 describe('FolderPage', () => {
@@ -10,7 +10,9 @@ describe('FolderPage', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [FolderPage],
-      providers: [provideRouter([])]
+      providers: [
+  provideHttpClient()
+]
     }).compileComponents();
 
     fixture = TestBed.createComponent(FolderPage);

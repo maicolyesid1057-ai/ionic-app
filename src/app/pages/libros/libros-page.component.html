@@ -1,0 +1,47 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button menu="main-menu"></ion-menu-button>
+        </ion-buttons>
+
+        <ion-title>Libros</ion-title>
+        
+    </ion-toolbar>
+
+    <app-search-filter [(busqueda)]="busqueda" />
+</ion-header>
+
+<ion-content>
+    <div class="lista-libros">
+        @if(data$ | async; as libros) {
+            @for (libro of libros; track $index) {
+                @if (libro.titulo.toLowerCase().includes(busqueda.toLowerCase())) {
+                    <div
+                        class="libro-clickeable"
+                        (keydown.enter)="abrirDetalle(libro)"
+                        tabindex="0"
+                        role="button"
+                        [attr.aria-label]="'Ver detalles de ' + libro.titulo">
+                        <app-card-info
+                        [libro]="libro"
+                        (agregarLibro)="agregar(libro)"
+                        (click)="abrirDetalle(libro)"
+                        />
+                        
+                    </div>
+                }
+            }
+        }
+    </div>
+
+    <ion-infinite-scroll
+        threshold="100px"
+        (ionInfinite)="cargarMasLibros($event)"
+        [disabled]="!hayMasLibros">
+
+        <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            loadingText="Cargando más libros...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+</ion-content>
