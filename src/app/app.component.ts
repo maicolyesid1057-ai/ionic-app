@@ -26,7 +26,9 @@ import { auth } from './firebase';
     IonIcon, 
     IonLabel,
     IonRouterLink, 
-    IonRouterOutlet],
+    IonRouterOutlet,
+    IonButton
+  ],
 })
 export class AppComponent {
 
