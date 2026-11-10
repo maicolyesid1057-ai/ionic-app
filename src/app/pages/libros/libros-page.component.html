@@ -3,13 +3,10 @@
         <ion-buttons slot="start">
             <ion-menu-button menu="main-menu"></ion-menu-button>
         </ion-buttons>
-
         <ion-title>Libros</ion-title>
     </ion-toolbar>
-
     <app-search-filter [(busqueda)]="busqueda" />
 </ion-header>
-
 <ion-content>
     <div class="lista-libros">
         @if(data$ | async; as libros) {
@@ -29,11 +26,9 @@
         threshold="100px"
         (ionInfinite)="cargarMasLibros($event)"
         [disabled]="!hayMasLibros">
-
         <ion-infinite-scroll-content
             loadingSpinner="bubbles"
             loadingText="Cargando más libros...">
         </ion-infinite-scroll-content>
-
     </ion-infinite-scroll>
 </ion-content>
