@@ -1,7 +1,6 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Detalle del libro</ion-title>
-
     <ion-buttons slot="end">
       <ion-button (click)="cerrarModal()">
         Cerrar
@@ -9,36 +8,26 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 <ion-content class="ion-padding">
-
   <div class="detalle-libro">
-
     <img
       [src]="libro.caratula"
       [alt]="libro.titulo"
       class="portada"
     />
-
     <h1>{{ libro.titulo }}</h1>
-
     <ion-card>
       <ion-card-header>
         <ion-card-title>Información general</ion-card-title>
       </ion-card-header>
-
       <ion-card-content>
         <p><strong>Autor:</strong> {{ libro.autor }}</p>
-
         <p>
           <strong>Edición:</strong>
           {{ libro.edicion ?? 'No disponible' }}
         </p>
-
         <p><strong>ID:</strong> {{ libro.id }}</p>
       </ion-card-content>
     </ion-card>
-
   </div>
-
 </ion-content>

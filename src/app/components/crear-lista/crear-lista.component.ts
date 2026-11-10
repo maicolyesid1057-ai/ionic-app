@@ -22,30 +22,24 @@ import { Lista, ListaCrear } from "../../services/lista/lista";
 })
 export class CrearListaComponent{
     private fb = new FormBuilder();
-    
+
     cancelar = output()
     confirmar = output<ListaCrear>()
-
     listaForm = this.fb.group({
         nombre: [null, Validators.required],
         descripcion: [null, Validators.required]
     })
-
     constructor()
     {}
-
     cancel(){
         this.cancelar.emit()
     }
-
     confirm(){
         if(this.listaForm.invalid){
             this.listaForm.markAllAsTouched();
             return;
         }
-
-        var nuevaLista : ListaCrear = {
-            
+        var nuevaLista : ListaCrear = {   
             description : this.listaForm.controls["descripcion"].value!,
             name: this.listaForm.controls["nombre"].value!
         }

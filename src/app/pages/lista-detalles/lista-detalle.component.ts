@@ -45,7 +45,6 @@ export class ListaDetalleComponent implements OnInit{
         this.nombrelista = nombreParam;
         this.listaService.obtenerListaDetalles(id!).subscribe();
     }
-
     eliminar(libro: Libro){
         this.listaService.eliminarLibro(this.listaId, libro.id).subscribe({
             next: async () => {

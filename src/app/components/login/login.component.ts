@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { auth } from '../../firebase';
 import {
   IonContent,
   IonHeader,
@@ -31,10 +30,8 @@ import {
   ]
 })
 export class LoginPage {
-
   correo: string = '';
   password: string = '';
-
   mensaje: string = '';
 
   iniciarSesion() {

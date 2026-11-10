@@ -9,7 +9,6 @@ export interface Lista {
     origen: 'local' | 'openLibrary'
     libros: Libro[]
 }
-
 export interface ListaCrear {
     name: string;
     description?: string;

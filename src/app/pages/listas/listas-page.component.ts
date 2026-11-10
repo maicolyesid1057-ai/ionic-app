@@ -40,29 +40,22 @@ export class ListasPageComponent implements OnInit {
     listaService = inject(ListaService)
     toastController =  inject(ToastController);
     listas: Lista[] = []
-
     busqueda = '';
     showMenu = false;
-
     @ViewChild(IonModal) modal!: IonModal;
-
     message = '';
     name!: string;
     data$ : Observable<Lista[]>
-
     constructor() 
     {
         this.data$ = this.listaService.listas$;
     }
-
     ngOnInit(): void {
         this.cargarListas();
     }
-
     cargarListas():void{
         this.listaService.obtenerListas().subscribe();
     }
-
     cancel() {
         this.modal.dismiss(null, 'cancel');
     }
@@ -86,11 +79,9 @@ export class ListasPageComponent implements OnInit {
         });
         await toast.present();
     }
-
     detalles(lista: Lista ){
         this.router.navigate(['listas/detalle', lista.id, lista.nombre ]);
     }
-
     eliminar(lista: Lista){
         this.listaService.eliminarLista(lista.id).subscribe({
             next :()=> {

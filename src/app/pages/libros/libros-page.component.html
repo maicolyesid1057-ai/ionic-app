@@ -4,7 +4,6 @@
             <ion-menu-button menu="main-menu"></ion-menu-button>
         </ion-buttons>
         <ion-title>Libros</ion-title>
-        
     </ion-toolbar>
     <app-search-filter [(busqueda)]="busqueda" />
 </ion-header>
@@ -24,14 +23,13 @@
                         (accionLibro)="agregar($event)"
                         [botonTitulo]="'Agregar'"
                         [icono]="'heart'"
-                        (click)="abrirDetalle(libro)"
+                       
                     />
                     </div>
                 }
             }
         }
     </div>
-
     <ion-infinite-scroll
         threshold="100px"
         (ionInfinite)="cargarMasLibros($event)"

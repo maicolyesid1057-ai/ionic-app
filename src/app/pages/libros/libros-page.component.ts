@@ -11,10 +11,7 @@ import { Libro } from '../../services/libro/libro';
 import { SearchFilterComponent } from '../../components/search-filter/search-filter.component';
 import { Lista } from '../../services/lista/lista';
 import { ListaService } from '../../services/lista/lista-service';
-import { signOut } from 'firebase/auth';
-import { auth } from '../../firebase';
 import { Router } from '@angular/router';
-
 
 @Component({
     selector: 'app-libros',
@@ -47,18 +44,14 @@ export class LibrosPageComponent implements OnInit {
     totalLibros = 0;
     hayMasLibros = true;
     cargando = false;
-
-
     data$: Observable<Libro[]>;
     listas: Lista[] = [];
     private modalController = inject(ModalController);
     private router = inject(Router);
 
-
     constructor() {
         this.data$ = this.librosService.libros$;
     }
-
     ngOnInit() {
         this.cargarPagina(1);
         this.listaService.obtenerListas().subscribe({
@@ -76,10 +69,8 @@ export class LibrosPageComponent implements OnInit {
         breakpoints: [0, 0.75, 0.95],
         initialBreakpoint: 0.95
     });
-
     await modal.present();
 }
-
     async agregar(libro: Libro) {
         const actionSheet = await this.actionSheetCtrl.create({
             subHeader: 'Selecciona una lista',
@@ -103,21 +94,17 @@ export class LibrosPageComponent implements OnInit {
             }
             ]
         })
-
         await actionSheet.present();
     }
-
     cargarMasLibros(event: InfiniteScrollCustomEvent) {
         if (this.cargando || !this.hayMasLibros) {
             event.target.complete();
             return;
         }
-
         this.paginaActual++;
         this.cargarPagina(this.paginaActual, event);
     }
-
-    private async cargarPagina(
+    private  cargarPagina(
         pagina: number,
         event?: InfiniteScrollCustomEvent
     ) {

@@ -2,16 +2,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  updateProfile,
-  signOut
-} from 'firebase/auth';
-
-import { auth } from '../../firebase';
 import { Router } from '@angular/router';
+
+import { AuthService } from '../../services/auth';
 
 import { IonContent } from '@ionic/angular/ion-content';
 import { IonCard } from '@ionic/angular/ion-card';
@@ -30,7 +23,9 @@ import { addIcons } from 'ionicons';
 import {
   lockClosedOutline,
   personCircleOutline,
-  mailOutline
+  mailOutline,
+  personOutline,
+  shieldCheckmarkOutline
 } from 'ionicons/icons';
 
 @Component({
@@ -57,6 +52,9 @@ import {
 })
 export class LoginComponent {
 
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
   nombre = '';
   email = '';
   password = '';
@@ -67,18 +65,19 @@ export class LoginComponent {
   tipoMensaje: 'error' | 'success' = 'error';
   cargando = false;
 
-  private router = inject(Router);
-
   constructor() {
     addIcons({
       'lock-closed-outline': lockClosedOutline,
       'person-circle-outline': personCircleOutline,
-      'mail-outline': mailOutline
+      'mail-outline': mailOutline,
+      'person-outline': personOutline,
+      'shield-checkmark-outline': shieldCheckmarkOutline
     });
   }
 
   cambiarModo(): void {
     this.modoRegistro = !this.modoRegistro;
+
     this.mensaje = '';
     this.nombre = '';
     this.email = '';
@@ -88,15 +87,16 @@ export class LoginComponent {
 
   async enviarFormulario(): Promise<void> {
 
-    this.mensaje = '';
-
     if (this.cargando) return;
 
+    this.mensaje = '';
     this.cargando = true;
 
     try {
+
       if (this.modoRegistro) {
 
+        // VALIDACIONES
         if (!this.nombre.trim()) {
           throw new Error('Escribe tu nombre.');
         }
@@ -113,83 +113,59 @@ export class LoginComponent {
           throw new Error('La contraseña debe tener al menos 6 caracteres.');
         }
 
-        const credencial = await createUserWithEmailAndPassword(
-          auth,
+        // REGISTRO
+        await this.authService.registrar(
+          this.nombre.trim(),
           this.email.trim(),
           this.password
         );
 
-     
-        await updateProfile(credencial.user, {
-          displayName: this.nombre.trim()
-        });
-
-        await signOut(auth);
+        // VOLVER AL LOGIN
+        this.modoRegistro = false;
+        this.nombre = '';
+        this.password = '';
+        this.confirmarPassword = '';
 
         this.mensaje = '¡Cuenta creada correctamente! Ahora inicia sesión.';
         this.tipoMensaje = 'success';
 
-        this.cambiarModo();
-      }
-      else {
+      } else {
 
+        // VALIDACIONES
         if (!this.email.trim() || !this.password) {
           throw new Error('Ingresa tu correo y contraseña.');
         }
 
-        const credencial = await signInWithEmailAndPassword(
-          auth,
+        // INICIAR SESIÓN
+        const usuario = await this.authService.iniciarSesion(
           this.email.trim(),
           this.password
         );
 
         this.mensaje = `¡Bienvenido${
-          credencial.user.displayName
-            ? ', ' + credencial.user.displayName
+          usuario.displayName
+            ? ', ' + usuario.displayName
             : ''
         }!`;
 
         this.tipoMensaje = 'success';
 
         await this.router.navigateByUrl('/libros');
-
       }
 
     } catch (error: unknown) {
 
-      console.error('ERROR COMPLETO DE FIREBASE:', error);
+      console.error('Error de autenticación:', error);
 
       const codigo = (error as { code?: string }).code;
 
-      console.error('CÓDIGO FIREBASE:', codigo);
-
       const errores: Record<string, string> = {
-        'auth/invalid-credential':
-          'Correo o contraseña incorrectos.',
-
-        'auth/user-not-found':
-          'No existe una cuenta con ese correo.',
-
-        'auth/wrong-password':
-          'La contraseña es incorrecta.',
-
-        'auth/email-already-in-use':
-          'Este correo ya está registrado.',
-
-        'auth/invalid-email':
-          'El correo electrónico no es válido.',
-
-        'auth/weak-password':
-          'La contraseña debe tener al menos 6 caracteres.',
-
-        'auth/too-many-requests':
-          'Demasiados intentos. Intenta más tarde.',
-
-        'auth/network-request-failed':
-          'Error de conexión. Comprueba tu internet.',
-
-        'auth/operation-not-allowed':
-          'El registro con correo y contraseña está deshabilitado.'
+        'auth/email-already-in-use': 'Este correo ya está registrado.',
+        'auth/invalid-email': 'El correo electrónico no es válido.',
+        'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres.',
+        'auth/invalid-credential': 'Correo o contraseña incorrectos.',
+        'auth/too-many-requests': 'Demasiados intentos. Intenta más tarde.',
+        'auth/network-request-failed': 'Comprueba tu conexión a internet.'
       };
 
       this.mensaje =
@@ -197,14 +173,12 @@ export class LoginComponent {
           ? errores[codigo]
           : error instanceof Error
             ? error.message
-            : 'Ocurrió un error de autenticación.';
+            : 'Ocurrió un error inesperado.';
 
       this.tipoMensaje = 'error';
 
     } finally {
-
       this.cargando = false;
-
     }
   }
 }
