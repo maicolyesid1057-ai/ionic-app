@@ -29,8 +29,8 @@ export interface DocListDetalle {
 export class ListaService {
     http = inject(HttpClient)
     private apiUrl = 'http://openlibrary.org/people';
-    // private apiUrlList = 'https://openlibraryapi-f3ghbxe3gtatfcb3.westus3-01.azurewebsites.net/api/listas';
-    private apiUrlList = 'https://localhost:7259/api/listas'
+    private apiUrlList = 'https://openlibraryapi-f3ghbxe3gtatfcb3.westus3-01.azurewebsites.net/api/listas';
+  //  private apiUrlList = 'https://localhost:7259/api/listas'
 
     private listaSubject = new BehaviorSubject<Lista[]>([]);
     listas$ = this.listaSubject.asObservable();

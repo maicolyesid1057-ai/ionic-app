@@ -125,3 +125,24 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+
+.menu-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+#inbox-list {
+  flex: 1;
+}
+
+.logout-container {
+  padding: 16px;
+  margin-top: auto;
+  border-top: 1px solid var(--ion-color-light-shade);
+}
+
+.logout-container ion-button {
+  margin: 0;
+  font-weight: 600;
+}

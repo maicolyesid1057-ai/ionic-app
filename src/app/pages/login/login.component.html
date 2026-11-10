@@ -1,8 +1,8 @@
 
 <ion-content class="login-content">
   <div class="login-container">
-
     <ion-card class="login-card">
+
       <ion-card-header>
         <div class="icono-login">
           <ion-icon name="person-circle-outline"></ion-icon>
@@ -13,24 +13,22 @@
         </ion-card-title>
 
         <ion-card-subtitle>
-          {{
-            modoRegistro
-              ? 'Regístrate para comenzar'
-              : 'Ingresa tus credenciales'
-          }}
+          {{ modoRegistro
+            ? 'Regístrate para comenzar'
+            : 'Ingresa tus credenciales' }}
         </ion-card-subtitle>
       </ion-card-header>
 
       <ion-card-content>
+
         <form (ngSubmit)="enviarFormulario()" #formulario="ngForm">
 
+          
           <ion-item *ngIf="modoRegistro">
-            <ion-icon
-              name="person-outline"
-              slot="start">
-            </ion-icon>
+            <ion-icon name="person-outline" slot="start"></ion-icon>
 
             <ion-input
+              type="text"
               label="Nombre completo"
               labelPlacement="floating"
               name="nombre"
@@ -41,11 +39,9 @@
             </ion-input>
           </ion-item>
 
+          
           <ion-item>
-            <ion-icon
-              name="mail-outline"
-              slot="start">
-            </ion-icon>
+            <ion-icon name="mail-outline" slot="start"></ion-icon>
 
             <ion-input
               type="email"
@@ -60,10 +56,7 @@
           </ion-item>
 
           <ion-item>
-            <ion-icon
-              name="lock-closed-outline"
-              slot="start">
-            </ion-icon>
+            <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
 
             <ion-input
               type="password"
@@ -100,9 +93,11 @@
           <ion-text
             *ngIf="mensaje"
             [color]="tipoMensaje === 'error' ? 'danger' : 'success'">
+
             <p class="mensaje">{{ mensaje }}</p>
           </ion-text>
 
+          
           <ion-button
             expand="block"
             type="submit"
@@ -115,40 +110,36 @@
             </ion-spinner>
 
             <span *ngIf="!cargando">
-              {{
-                modoRegistro
-                  ? 'Registrarme'
-                  : 'Iniciar sesión'
-              }}
+              {{ modoRegistro ? 'Registrarme' : 'Iniciar sesión' }}
             </span>
+
           </ion-button>
 
         </form>
 
+        
         <div class="cambiar-modo">
+
           <ion-text>
-            {{
-              modoRegistro
-                ? '¿Ya tienes una cuenta?'
-                : '¿Todavía no tienes una cuenta?'
-            }}
+            {{ modoRegistro
+              ? '¿Ya tienes una cuenta?'
+              : '¿Todavía no tienes una cuenta?' }}
           </ion-text>
 
           <ion-button
+            type="button"
             fill="clear"
             size="small"
             (click)="cambiarModo()"
             [disabled]="cargando">
-            {{
-              modoRegistro
-                ? 'Inicia sesión'
-                : 'Regístrate'
-            }}
+
+            {{ modoRegistro ? 'Inicia sesión' : 'Regístrate' }}
+
           </ion-button>
+
         </div>
 
       </ion-card-content>
     </ion-card>
-
   </div>
 </ion-content>

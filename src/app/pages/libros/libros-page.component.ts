@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
+import { ModalController } from '@ionic/angular';
+import { DetalleLibroModalComponent } from '../../components/detalle-libro-modal/detalle-libro-modal.component';
 import { InfiniteScrollCustomEvent, IonContent, IonMenuButton, IonHeader, IonInfiniteScroll, IonInfiniteScrollContent, IonTitle, IonToolbar, ToastController, IonApp, IonMenu, IonList, IonItem, IonIcon, IonButtons, IonButton, IonLabel, IonMenuToggle, IonSplitPane, IonRouterOutlet, IonActionSheet, ActionSheetController } from '@ionic/angular';
-
 import { LibrosService } from '../../services/libro/libro-service';
 import { CardInfoComponent } from "../../components/card-info/card-info.component";
 import { CommonModule } from '@angular/common';
@@ -11,6 +11,10 @@ import { Libro } from '../../services/libro/libro';
 import { SearchFilterComponent } from '../../components/search-filter/search-filter.component';
 import { Lista } from '../../services/lista/lista';
 import { ListaService } from '../../services/lista/lista-service';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../firebase';
+import { Router } from '@angular/router';
+
 
 @Component({
     selector: 'app-libros',
@@ -47,6 +51,9 @@ export class LibrosPageComponent implements OnInit {
 
     data$: Observable<Libro[]>;
     listas: Lista[] = [];
+    private modalController = inject(ModalController);
+    private router = inject(Router);
+
 
     constructor() {
         this.data$ = this.librosService.libros$;
@@ -60,6 +67,18 @@ export class LibrosPageComponent implements OnInit {
             }
         });
     }
+    async abrirDetalle(libro: Libro) {
+    const modal = await this.modalController.create({
+        component: DetalleLibroModalComponent,
+        componentProps: {
+            libro: libro
+        },
+        breakpoints: [0, 0.75, 0.95],
+        initialBreakpoint: 0.95
+    });
+
+    await modal.present();
+}
 
     async agregar(libro: Libro) {
         const actionSheet = await this.actionSheetCtrl.create({
