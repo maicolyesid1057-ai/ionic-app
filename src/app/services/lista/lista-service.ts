@@ -29,8 +29,8 @@ export interface DocListDetalle {
 export class ListaService {
     http = inject(HttpClient)
     private apiUrl = 'http://openlibrary.org/people';
-    // private apiUrlList = 'https://openlibraryapi-f3ghbxe3gtatfcb3.westus3-01.azurewebsites.net/api/listas';
-    private apiUrlList = 'https://localhost:7259/api/listas'
+    private apiUrlList = 'https://openlibraryapi-f3ghbxe3gtatfcb3.westus3-01.azurewebsites.net/api/listas';
+    // private apiUrlList = 'https://localhost:7259/api/listas'
 
     private listaSubject = new BehaviorSubject<Lista[]>([]);
     listas$ = this.listaSubject.asObservable();
@@ -65,11 +65,23 @@ export class ListaService {
     }
 
     eliminarLista(id : string){
-        
+        return this.http.delete(`${this.apiUrlList}/${encodeURIComponent(id)}`,{
+            responseType: 'text'
+        })
     }
 
     agregarLibro(listaId: string, libroKey: string){
-        return this.http.post(`${this.apiUrlList}/${encodeURIComponent(listaId)}`,{
+        return this.http.post(`${this.apiUrlList}/${encodeURIComponent(listaId)}/libros`,{
+            key: libroKey
+        },
+        {
+            responseType: 'text'
+        })
+    }
+
+    eliminarLibro(listaId: string, libroKey: string){
+        console.log('eliminando libro...', libroKey)
+        return this.http.post(`${this.apiUrlList}/${encodeURIComponent(listaId)}/libros/quitar`,{
             key: libroKey
         },
         {
@@ -83,7 +95,7 @@ export class ListaService {
             map(respuesta =>
                 (respuesta.entries ?? []).map((item: any) =>
                 ({
-                    id: item.id, 
+                    id: item.url, 
                     autor: 'Consultar información',
                     titulo: item.title || 'Sin título',
                     edicion: item.first_publish_year || 0,

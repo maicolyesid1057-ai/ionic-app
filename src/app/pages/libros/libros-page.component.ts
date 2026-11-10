@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { InfiniteScrollCustomEvent, IonContent, IonMenuButton, IonHeader, IonInfiniteScroll, IonInfiniteScrollContent, IonTitle, IonToolbar, ToastController, IonApp, IonMenu, IonList, IonItem, IonIcon, IonButtons, IonButton, IonLabel, IonMenuToggle, IonSplitPane, IonRouterOutlet, IonActionSheet, ActionSheetController } from '@ionic/angular';
+import { InfiniteScrollCustomEvent, IonContent, IonMenuButton, IonHeader, IonInfiniteScroll, IonInfiniteScrollContent, IonTitle, IonToolbar, ToastController, IonApp, IonMenu, IonList, IonItem, IonIcon, IonButtons, ActionSheetController } from '@ionic/angular';
 
 import { LibrosService } from '../../services/libro/libro-service';
 import { CardInfoComponent } from "../../components/card-info/card-info.component";
@@ -67,9 +67,14 @@ export class LibrosPageComponent implements OnInit {
             buttons: [...this.listas.map(lista =>
             ({
                 text: lista.nombre,
-                handler: () => {
-                    this.listaService.agregarLibro(lista.id, libro.id)
-                    return true;
+                handler: async () => {
+                    this.listaService.agregarLibro(lista.id, libro.id).subscribe()
+                    const toast = await this.toastController.create({
+                        message: `${libro.titulo} agregado!`,
+                        duration: 1500,
+                        position: 'top',
+                    });
+                    await toast.present();
                 }
             }))
                 ,
@@ -81,13 +86,6 @@ export class LibrosPageComponent implements OnInit {
         })
 
         await actionSheet.present();
-
-        // const toast = await this.toastController.create({
-        //     message: `${libro.titulo} agregado!`,
-        //     duration: 1500,
-        //     position: 'top',
-        // });
-        // await toast.present();
     }
 
     cargarMasLibros(event: InfiniteScrollCustomEvent) {

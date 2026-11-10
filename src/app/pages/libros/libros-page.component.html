@@ -17,7 +17,9 @@
                 @if (libro.titulo.toLowerCase().includes(busqueda.toLowerCase())) {
                     <app-card-info
                         [libro]="libro"
-                        (agregarLibro)="agregar(libro)"
+                        (accionLibro)="agregar($event)"
+                        [botonTitulo]="'Agregar'"
+                        [icono]="'heart'"
                     />
                 }
             }

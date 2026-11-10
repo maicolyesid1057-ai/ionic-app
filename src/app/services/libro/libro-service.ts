@@ -4,7 +4,7 @@ import { BehaviorSubject, map, Observable, tap } from 'rxjs';
 import { Libro } from './libro';
 
 export interface DocLibro {
-  id: string;
+  key: string;
   title: string;
   content: string;
   category: string;
@@ -38,7 +38,7 @@ export class LibrosService {
                 const librosActules = this.librosSubject.value;
                 
                 const newlibros: Libro[] = docs.map((doc): Libro => ({
-                    id: doc.id,
+                    id: doc.key,
                     autor: doc.author_name[0],
                     titulo: doc.title || 'Sin título',
                     edicion: doc.first_publish_year || 0,

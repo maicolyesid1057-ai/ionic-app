@@ -22,16 +22,17 @@ import { Libro } from '../../services/libro/libro';
 })
 export class CardInfoComponent {
 
-  agregarLibro = output<Libro>();
+  accionLibro = output<Libro>();
   eliminarLibro = output<Libro>();
   libro = input<Libro>();
-  botonTitulo = input<string>("Agregar");
+  botonTitulo = input<string>();
+  icono = input<string>();
 
   constructor() 
   {}
 
-  agregar(libro: Libro){
-    this.agregarLibro.emit(libro)
+  accion(libro: Libro){
+    this.accionLibro.emit(libro)
   }
 
   eliminar(libro: Libro){

@@ -10,7 +10,11 @@
             @if(libros.length > 0) {
                 @for (libro of libros; track $index) {
                 @if (libro.titulo.toLowerCase().includes(busqueda.toLowerCase())) {
-                    <app-card-info [libro]="libro" (eliminarLibro)="eliminar($event)" [botonTitulo]="'Eliminar'"/>
+                    <app-card-info 
+                    [libro]="libro" 
+                    (accionLibro)="eliminar($event)" 
+                    [botonTitulo]="'Eliminar'"
+                    [icono]="'trash'"/>
                 }
             }}
             @else {

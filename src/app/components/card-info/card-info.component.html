@@ -8,8 +8,8 @@
     <ion-card-content>
       Autor: {{ libro()!.autor }}
     </ion-card-content>
-    <ion-button expand="block" (click)="agregar(libro()!)">
-      <ion-icon name="heart" /> {{botonTitulo()}}
+    <ion-button expand="block" (click)="accion(libro()!)">
+      <ion-icon [name]="icono()" /> {{botonTitulo()}}
     </ion-button>
   </ion-card>
 }

@@ -12,15 +12,23 @@
         @if(data$ | async; as listas){
             @for (lista of listas; track lista.id) {
                 @if (lista.nombre.toLowerCase().includes(busqueda.toLowerCase())) {
-                    <ion-item button (click)="detalles(lista)" >
-                        <ion-avatar slot="start">
-                            <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Profile">
-                        </ion-avatar>
-                        <ion-label>
-                            <h2>{{lista.nombre}}</h2>
-                            <p>{{lista.cantidad}} libros</p>
-                        </ion-label>
-                    </ion-item>
+                    <ion-item-sliding>
+                        <ion-item button (click)="detalles(lista)" >
+                            <ion-avatar slot="start">
+                                <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Profile">
+                            </ion-avatar>
+                            <ion-label>
+                                <h2>{{lista.nombre}}</h2>
+                                <p>{{lista.cantidad}} libros</p>
+                            </ion-label>
+                        </ion-item>
+                        <ion-item-options>
+                            <ion-item-option color="danger" (click)="eliminar(lista)">
+                                <ion-icon slot="icon-only" name="trash"/>
+                            </ion-item-option>
+                        </ion-item-options>
+                    </ion-item-sliding>
+                    
                 }
             }
         }
@@ -32,7 +40,7 @@
     </ion-fab>
     <ion-modal trigger="open-modal" >
         <ng-template>
-            <app-crear-lista (cancelar)="cancel()" (confirmar)="confirm($event)"/>
+            <app-crear-lista (cancelar)="cancel()" (confirmar)="crear($event)"/>
         </ng-template>
     </ion-modal>
 </ion-content>
