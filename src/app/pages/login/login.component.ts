@@ -1,6 +1,6 @@
 
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -54,6 +54,7 @@ export class LoginComponent {
 
   private authService = inject(AuthService);
   private router = inject(Router);
+  private cd = inject(ChangeDetectorRef);
 
   nombre = '';
   email = '';
@@ -96,7 +97,6 @@ export class LoginComponent {
 
       if (this.modoRegistro) {
 
-        // VALIDACIONES
         if (!this.nombre.trim()) {
           throw new Error('Escribe tu nombre.');
         }
@@ -113,14 +113,12 @@ export class LoginComponent {
           throw new Error('La contraseña debe tener al menos 6 caracteres.');
         }
 
-        // REGISTRO
         await this.authService.registrar(
           this.nombre.trim(),
           this.email.trim(),
           this.password
         );
 
-        // VOLVER AL LOGIN
         this.modoRegistro = false;
         this.nombre = '';
         this.password = '';
@@ -131,12 +129,10 @@ export class LoginComponent {
 
       } else {
 
-        // VALIDACIONES
         if (!this.email.trim() || !this.password) {
           throw new Error('Ingresa tu correo y contraseña.');
         }
 
-        // INICIAR SESIÓN
         const usuario = await this.authService.iniciarSesion(
           this.email.trim(),
           this.password
@@ -179,6 +175,7 @@ export class LoginComponent {
 
     } finally {
       this.cargando = false;
+      this.cd.detectChanges();
     }
   }
 }

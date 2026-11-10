@@ -19,12 +19,16 @@ export class AuthService {
       email,
       password
     );
+
     await updateProfile(credencial.user, {
       displayName: nombre
     });
+
     await signOut(auth);
+    
     return credencial.user;
   }
+  
   async iniciarSesion(email: string, password: string) {
     const credencial = await signInWithEmailAndPassword(
       auth,
